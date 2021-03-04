@@ -114,6 +114,12 @@ public class AdminServiceImpl implements AdminService {
 
 	}
 
+//	@Override
+//	public List<Course> getAllCourseWithCategoryName() {
+//		
+//		return cou.findAllWithCategoryName();
+//	}
+
 	
 
 }

@@ -37,5 +37,7 @@ public interface AdminService {
 	public void deleteVideo(int i);
 
 	boolean updateVideo(Video v);
+	
+//	public List<Course> getAllCourseWithCategoryName();
 
 }

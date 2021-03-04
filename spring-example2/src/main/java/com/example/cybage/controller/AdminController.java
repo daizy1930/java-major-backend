@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ import com.example.cybage.entity.Course;
 import com.example.cybage.entity.Video;
 
 @RestController
+@CrossOrigin
 public class AdminController {
 
 	@Autowired
@@ -39,7 +41,7 @@ public class AdminController {
 		for (Category l : li) {
 			System.out.println(l);
 		}
-		return ResponseEntity.status(HttpStatus.FOUND).body(li);
+		return ResponseEntity.status(HttpStatus.OK).body(li);
 	}
 
 	// show category by id
@@ -51,9 +53,15 @@ public class AdminController {
 	}
 
 	// add category
-	@PostMapping("/category")
-	public boolean addCategory(@RequestBody Category c) {
-		return asi.addCategory(c);
+	@PostMapping("/category/add")
+	public String addCategory(@RequestBody Category c) {
+		
+		if(c.getCategoryId()==0) {
+			asi.addCategory(c);
+		}else {
+			asi.updateCategory(c);
+		}
+		return "redirect:/category";
 
 	}
 
@@ -78,8 +86,24 @@ public class AdminController {
 		for (Course l : li) {
 			System.out.println(l);
 		}
-		return ResponseEntity.status(HttpStatus.FOUND).body(li);
+		return ResponseEntity.status(HttpStatus.OK).body(li);
 	}
+	
+	
+	//show all course with category name
+//	@GetMapping("/course/withCatName")
+//	public ResponseEntity<List<Course>> AllCourseWithCategoryName() {
+//		System.out.println("In method");
+//		List<Course> li = asi.getAllCourseWithCategoryName();
+//		
+//		for (Course l : li) {
+//			System.out.println(l);
+//		}
+//		return ResponseEntity.status(HttpStatus.OK).body(li);
+//	}
+	
+	
+	
 
 	// show course by id
 	@GetMapping("/course/{id}")
@@ -90,7 +114,7 @@ public class AdminController {
 	}
 
 	// add course
-	@PostMapping("/course/{cat_id}")
+	@PostMapping("/{cat_id}")
 	public boolean addCourse(@RequestBody Course c, @PathVariable int cat_id) {
 		return asi.addCourse(c, cat_id);
 
@@ -117,7 +141,7 @@ public class AdminController {
 		for (Video l : li2) {
 			System.out.println(l);
 		}
-		return ResponseEntity.status(HttpStatus.FOUND).body(li2);
+		return ResponseEntity.status(HttpStatus.OK).body(li2);
 	}
 
 	// show video by id

@@ -10,7 +10,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 public class Course {
@@ -26,9 +29,15 @@ public class Course {
 //    @JoinColumn(name="courseId", referencedColumnName = "courseId")
 //    List<Like> likes;
     
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "categoryId",referencedColumnName="categoryId")
+	@JsonIgnoreProperties("course")
+    private Category category;
+    
     @ManyToMany(targetEntity = Video.class,cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     List<Video> video;
-
+    
+    
 	public Course() {
 		super();
 	}
@@ -59,6 +68,14 @@ public class Course {
 
 	public String getCourseLogo() {
 		return courseLogo;
+	}
+
+	public String getCategory() {
+		return category.getCategoryName();
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
 	}
 
 	public void setCourseLogo(String courseLogo) {
